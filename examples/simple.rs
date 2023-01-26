@@ -1,15 +1,12 @@
-use term_progress_bar::{self, ProgressBarBuilder};
+use term_progress_bar::{ProgressBar};
 
 fn main()
 {
-	let mut progbar = ProgressBarBuilder::default()
-		.name("Fred")
-		.build()
-		.unwrap();
+	let mut progbar = ProgressBar::default();
 	println!("{:?}",progbar);
 	while !progbar.is_done()
 	{
-		progbar.step_by(0.1);
+		progbar.step_by(1.0);
 		std::thread::sleep(std::time::Duration::from_secs_f64(0.05));
 	}
 }

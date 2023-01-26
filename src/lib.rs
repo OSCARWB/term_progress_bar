@@ -1,69 +1,137 @@
-#[macro_use]
-extern crate derive_builder;
+use std::{fmt::Debug, io::Write};
 mod pb2;
 
 pub fn add(left: usize, right: usize) -> usize {
 	left + right
 }
 
-pub struct Bar
+pub trait Bar : Debug
+{
+	fn draw_bar(&self,progress: &Progress);
+}
+
+#[derive(Debug)]
+pub struct TestBar
+{
+	bar_length: i64
+}
+
+impl TestBar
+{
+	pub fn new() -> Self
+	{
+		Self {
+			bar_length: 10,
+		}
+	}
+}
+
+impl Bar for TestBar
+{
+	fn draw_bar(&self, progress: &Progress)
+	{
+		let mut string: String = "[".into();
+		let bars = (progress.calc_proportion()*self.bar_length as f64).round() as i64 + 1;
+		eprintln!("prop: {}",progress.calc_proportion());
+		eprintln!("bars: {}",bars);
+		eprintln!("bar length: {}",self.bar_length);
+
+		for _ in 0..bars
+		{
+			string += "=";
+		}
+
+		if progress.val <= progress.val_max
+		{
+			string += ">";
+		}else{
+			string += "=";
+		}
+		println!("{}",self.bar_length-bars);
+		for _ in 0..(self.bar_length-bars)
+		{
+			string += " ";
+		}
+		string+="]";
+		eprintln!("str len: {}", string.len());
+		print!("\r{}\n",string);
+		std::io::stdout().flush();
+	}
+}
+
+#[allow(dead_code)]
+#[derive(Debug)]
+pub struct Progress
 {
 	val_min: f64,
 	val: f64,
 	val_max: f64,
 }
 
-
-pub trait Progressor
+impl Default for Progress
 {
-	fn draw(&self);
+	fn default() -> Self
+	{
+		Self {
+			val_min: 0.0,
+			val: 0.0,
+			val_max: 10.0,
+		}
+	}	
+}
 
-	fn step_by(&mut self, val: f64);
-
-	fn step_to(&mut self, val: f64);
-
-	fn is_done(&self) -> bool;
+impl Progress
+{
+	pub fn calc_proportion(&self) -> f64
+	{
+		self.val/(self.val_max-self.val_min)
+	}
 }
 
 #[allow(dead_code)]
-#[derive(Builder,Debug)]
-#[builder(default)]
+#[derive(Debug)]
 pub struct ProgressBar
 {
+	bar: Box<dyn Bar>,
+	progress: Progress,
 }
 
-#[allow(dead_code)]
-impl Progressor for ProgressBar
+impl ProgressBar
 {
-	fn draw(&self)
+	pub fn draw(&self)
 	{
-		todo!()
+		self.bar.draw_bar(&self.progress);
 	}
 
-	fn step_by(&mut self, val: f64)
+	pub fn step_by(&mut self, val: f64)
 	{
-		self.val += val;
+		self.progress.val += val;
+		if self.progress.val > self.progress.val_max
+		{
+			self.progress.val = self.progress.val_max;
+		}
 		self.draw();
 	}
 
-	fn step_to(&mut self, val: f64)
+	pub fn step_to(&mut self, val: f64)
 	{
-		self.val = val;
+		self.progress.val = val;
 		self.draw();
 	}
 
-	fn is_done(&self) -> bool
+	pub fn is_done(&self) -> bool
 	{
-		self.val >= self.val_max
+		self.progress.val >= self.progress.val_max
 	}
 }
 
-#[allow(dead_code)]
 impl Default for ProgressBar
 {
-	fn default() -> Self {
+	fn default() -> Self
+	{
 		Self {
-
+			progress: Default::default(),
+			bar: Box::new(TestBar::new()),
 		}
 	}
 }
