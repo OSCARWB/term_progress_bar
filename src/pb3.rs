@@ -1,10 +1,8 @@
-use std::{fmt::Debug, io::Write};
-
 pub fn add(left: usize, right: usize) -> usize {
 	left + right
 }
 
-pub trait Bar : Debug + Default
+pub trait Bar : Debug
 {
 	fn draw_bar(&self,progress: &Progress);
 }
@@ -22,13 +20,6 @@ impl TestBar
 		Self {
 			bar_length: 10,
 		}
-	}
-}
-
-impl Default for TestBar
-{
-	fn default() -> Self{
-		Self::new()
 	}
 }
 
@@ -101,13 +92,13 @@ impl Progress
 
 #[allow(dead_code)]
 #[derive(Debug)]
-pub struct ProgressBar<T : Bar>
+pub struct ProgressBar
 {
-	bar: T,
+	bar: Box<dyn Bar>,
 	progress: Progress,
 }
 
-impl<T : Bar> ProgressBar<T>
+impl ProgressBar
 {
 	pub fn draw(&self)
 	{
@@ -136,24 +127,13 @@ impl<T : Bar> ProgressBar<T>
 	}
 }
 
-impl<T : Bar> Default for ProgressBar<T>
+impl Default for ProgressBar
 {
 	fn default() -> Self
 	{
 		Self {
 			progress: Default::default(),
-			bar: Default::default(),
+			bar: Box::new(TestBar::new()),
 		}
-	}
-}
-
-#[cfg(test)]
-mod tests {
-	use super::*;
-
-	#[test]
-	fn it_works() {
-		let result = add(2, 2);
-		assert_eq!(result, 4);
 	}
 }
