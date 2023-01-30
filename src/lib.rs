@@ -7,7 +7,7 @@ pub mod bar;
 use bar::Bar;
 
 pub mod bars;
-use bars::{default_bar::DefaultBar};
+use bars::{named_bar::NamedBar};
 
 pub fn add(left: usize, right: usize) -> usize 
 {
@@ -61,7 +61,7 @@ impl Default for ProgressBar
 	{
 		Self {
 			progress: Default::default(),
-			bar: Box::new(DefaultBar::new()),
+			bar: Box::new(NamedBar::new()),
 		}
 	}
 }

@@ -3,13 +3,13 @@ use crate::{bar::Bar, Progress};
 use super::simple_bar::SimpleBar;
 
 #[derive(Debug)]
-pub struct DefaultBar
+pub struct NamedBar
 {
 	bar: SimpleBar,
 	name: Option<String>
 }
 
-impl DefaultBar
+impl NamedBar
 {
 	pub fn new() -> Self
 	{
@@ -21,7 +21,7 @@ impl DefaultBar
 	}
 }
 
-impl Bar for DefaultBar
+impl Bar for NamedBar
 {
 	fn draw_bar_string(&self,progress: &Progress) -> String
 	{
@@ -49,7 +49,7 @@ impl Bar for DefaultBar
 	}
 }
 
-impl Default for DefaultBar
+impl Default for NamedBar
 {
 	fn default() -> Self
 	{
@@ -57,13 +57,13 @@ impl Default for DefaultBar
 	}
 }
 
-pub struct DefaultBarBuilder
+pub struct NamedBarBuilder
 {
 	bar_length: usize,
 	name: Option<String>,
 }
 
-impl DefaultBarBuilder
+impl NamedBarBuilder
 {
 	pub fn new() -> Self
 	{
@@ -73,28 +73,28 @@ impl DefaultBarBuilder
 		}
 	}
 
-	pub fn build(self) -> DefaultBar
+	pub fn build(self) -> NamedBar
 	{
-		DefaultBar {
+		NamedBar {
 			bar: SimpleBar::with_length(self.bar_length),
 			name: self.name.clone(),
 		}
 	}
 
-	pub fn name(mut self, name: &str) -> DefaultBarBuilder
+	pub fn name(mut self, name: &str) -> NamedBarBuilder
 	{
 		self.name = Some(name.to_string());
 		self
 	}
 
-	pub fn bar_length(mut self, length: usize) -> DefaultBarBuilder
+	pub fn bar_length(mut self, length: usize) -> NamedBarBuilder
 	{
 		self.bar_length = length;
 		self
 	}
 }
 
-impl Default for DefaultBarBuilder
+impl Default for NamedBarBuilder
 {
 	fn default() -> Self
 	{

@@ -1,8 +1,8 @@
-use term_progress_bar::{ProgressBar, bars::default_bar::DefaultBarBuilder};
+use term_progress_bar::{ProgressBar, bars::named_bar::NamedBarBuilder};
 
 fn main()
 {
-	let bar = DefaultBarBuilder::default()
+	let bar = NamedBarBuilder::default()
 	.name("Example")
 	.bar_length(10)
 	.build();
