@@ -1,8 +1,8 @@
-use term_progress_bar::{ProgressBar, TestBar};
+use term_progress_bar::{ProgressBar};
 
 fn main()
 {
-	let mut progbar: ProgressBar<TestBar> = ProgressBar::default();
+	let mut progbar: ProgressBar = ProgressBar::default();
 	println!("{:?}",progbar);
 	loop
 	{
