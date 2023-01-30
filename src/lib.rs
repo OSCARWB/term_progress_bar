@@ -1,20 +1,19 @@
 use std::{fmt::Debug};
 
-mod progress;
+pub mod progress;
 use progress::Progress;
 
-mod bar;
+pub mod bar;
 use bar::Bar;
 
-mod bars;
-use bars::simple_bar::{SimpleBar};
+pub mod bars;
+use bars::{default_bar::DefaultBar};
 
 pub fn add(left: usize, right: usize) -> usize 
 {
 	left + right
 }
 
-#[allow(dead_code)]
 #[derive(Debug)]
 pub struct ProgressBar
 {
@@ -62,7 +61,7 @@ impl Default for ProgressBar
 	{
 		Self {
 			progress: Default::default(),
-			bar: Box::new(SimpleBar::new()),
+			bar: Box::new(DefaultBar::new()),
 		}
 	}
 }
