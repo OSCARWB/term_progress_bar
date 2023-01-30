@@ -6,7 +6,6 @@ pub struct SimpleBar
 	bar_length: usize
 }
 
-#[allow(dead_code)]
 impl SimpleBar
 {
 	pub fn new() -> Self

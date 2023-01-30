@@ -1,12 +1,8 @@
-use term_progress_bar::{ProgressBar, bars::named_bar::NamedBarBuilder};
+use term_progress_bar::{ProgressBar, bars::c_bar::CBar};
 
 fn main()
 {
-	let bar = NamedBarBuilder::default()
-	.name("Example")
-	.bar_length(10)
-	.build();
-	let mut progbar: ProgressBar = ProgressBar::new(Box::new(bar));
+	let mut progbar: ProgressBar = ProgressBar::new(Box::new(CBar::new()));
 	//println!("{:?}",progbar);
 	loop
 	{
