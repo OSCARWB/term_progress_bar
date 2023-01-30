@@ -7,7 +7,7 @@ fn main()
 	.bar_length(10)
 	.build();
 	let mut progbar: ProgressBar = ProgressBar::new(Box::new(bar));
-	println!("{:?}",progbar);
+	//println!("{:?}",progbar);
 	loop
 	{
 		progbar.step_by(0.125);
