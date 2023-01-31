@@ -17,11 +17,11 @@ impl CBar
 	{
 		Self {
 			bar_length: 10,
-			start_char:	"[".into(),
-			mid_char:	"=".into(),
-			head_char:	">".into(),
+			start_char:	"╠".into(),
+			mid_char:	"═".into(),
+			head_char:	"╡".into(),
 			space_char:	" ".into(),
-			end_char:	"]".into(),
+			end_char:	"╣".into(),
 		}
 	}
 
@@ -65,7 +65,6 @@ impl Bar for CBar
 			string += &self.space_char;
 		}
 		string+= &self.end_char;
-
 		string
 	}
 }
